@@ -131,5 +131,59 @@ public class TTTGameState implements GameState
         return TTTGameState.copyBoard(board);
     }
 
+    @Override
+    public String toString()
+    {
+        String str = "";
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == null) {
+                    str += "-";
+                } else if (board[i][j] == Piece.X) {
+                    str += "X";
+                } else if (board[i][j] == Piece.O) {
+                    str += "O";
+                }
+            }
+            str += "\n";
+        }
+        return str;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        TTTGameState gameState = (TTTGameState) o;
+
+        return Arrays.deepEquals(board, gameState.getBoard());
+    }
+
+    @Override
+    public int hashCode()
+    {
+        if (board == null) {
+            return 0;
+        }
+
+        int sizeX = board.length;
+        int sizeY = board[0].length;
+
+        Piece[] flatBoard = new Piece[sizeX * sizeY];
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                flatBoard[(i * sizeY) + j] = board[i][j];
+            }
+        }
+
+        return Arrays.deepHashCode(flatBoard);
+    }
+
     class IllegalMoveException extends RuntimeException {}
 }

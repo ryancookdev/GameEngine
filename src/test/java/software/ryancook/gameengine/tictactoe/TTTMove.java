@@ -5,7 +5,7 @@ import software.ryancook.gameengine.tictactoe.TTTGameState.Piece;
 
 final public class TTTMove implements Move
 {
-    private final TTTGameState.Piece piece;
+    private final Piece piece;
     private int x;
     private int y;
 
