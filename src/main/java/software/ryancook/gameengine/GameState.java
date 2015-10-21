@@ -1,6 +1,5 @@
 package software.ryancook.gameengine;
 
-import software.ryancook.gameengine.tictactoe.TTTGameState;
 import java.util.List;
 
 public interface GameState
