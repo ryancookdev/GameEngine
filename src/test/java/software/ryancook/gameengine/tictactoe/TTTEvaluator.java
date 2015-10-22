@@ -3,6 +3,8 @@ package software.ryancook.gameengine.tictactoe;
 import software.ryancook.gameengine.*;
 import software.ryancook.gameengine.tictactoe.TTTGameState.Piece;
 
+import java.util.List;
+
 public class TTTEvaluator implements Evaluator
 {
     @Override
@@ -79,6 +81,12 @@ public class TTTEvaluator implements Evaluator
         }
 
         return 0;
+    }
+
+    @Override
+    public List<Move> sortMoves(List<Move> moves)
+    {
+        return moves;
     }
 
     class IllegalPositionException extends RuntimeException {}

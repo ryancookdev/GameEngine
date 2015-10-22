@@ -183,11 +183,13 @@ public class Negamax
 
     private List<Move> getSortedMoves(GameState gameState)
     {
-        return gameState.getMoves();
+        List<Move> moves = gameState.getMoves();
+        return evaluator.sortMoves(moves);
     }
 
     private List<Move> getCriticalMoves(GameState gameState)
     {
-        return gameState.getCriticalMoves();
+        List<Move> moves = gameState.getCriticalMoves();
+        return evaluator.sortMoves(moves);
     }
 }
