@@ -84,7 +84,7 @@ public class TTTEvaluator implements Evaluator
     }
 
     @Override
-    public List<Move> sortMoves(List<Move> moves)
+    public List<Move> sortMoves(GameState gameState, List<Move> moves)
     {
         return moves;
     }

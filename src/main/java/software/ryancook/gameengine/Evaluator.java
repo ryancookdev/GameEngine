@@ -6,5 +6,5 @@ public interface Evaluator
 {
     int eval(GameState gameState);
 
-    List<Move> sortMoves(List<Move> moves);
+    List<Move> sortMoves(GameState gameState, List<Move> moves);
 }
