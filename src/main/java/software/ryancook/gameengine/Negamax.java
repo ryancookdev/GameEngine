@@ -79,11 +79,12 @@ public class Negamax
         List<Move> moves = getMoves(gameState);
 
         if (reachedMaximumDepth(gameState) && moves.size() == 0) { // Quiescent
-            int score = getSubjectiveScore(gameState);
-            return (score >= beta ? beta : score);
-        } else if (moves.size() == 0) {
             return getSubjectiveScore(gameState);
         }
+        if (moves.size() == 0) {
+            return getSubjectiveScore(gameState);
+        }
+
         if (reachedMaximumDepth(gameState)) {
             // This is never reached for TTT
             moves.add(gameState.getNullMove());
@@ -95,7 +96,7 @@ public class Negamax
             }
             int score = getScore(gameState, move, alpha, beta);
             if (score >= beta) {
-                return beta; // fail hard beta-cutoff
+                return score; // fail hard beta-cutoff
             }
             if (score > alpha) {
                 alpha = score;
@@ -145,7 +146,7 @@ public class Negamax
             int score = -getSubjectiveScore(newGameState);
             if (score < alpha) { // Delta pruning
                 cache.put(newGameState, score, maxDepth);
-                return alpha;
+                return score;
             }
         }
 
