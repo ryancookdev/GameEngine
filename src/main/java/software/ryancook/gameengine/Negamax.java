@@ -144,9 +144,8 @@ public class Negamax
         if (reachedMaximumDepth(newGameState)) {
             int score = -getSubjectiveScore(newGameState);
             if (score < alpha) { // Delta pruning
-                score = alpha;
                 cache.put(newGameState, score, maxDepth);
-                return score;
+                return alpha;
             }
         }
 
