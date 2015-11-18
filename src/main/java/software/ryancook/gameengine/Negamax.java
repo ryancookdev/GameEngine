@@ -4,9 +4,9 @@ import java.util.*;
 
 public class Negamax
 {
+    public static final int BEST_SCORE = 99999;
+    public static final int WORST_SCORE = -BEST_SCORE;
     private static final int DEFAULT_MAX_TIME = 1000;
-    private static final int BEST_SCORE = 99999;
-    private static final int WORST_SCORE = -BEST_SCORE;
     private long maxTime;
     private long startTime;
     private int maxDepth;
