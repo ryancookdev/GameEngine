@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 public class GameStateCacheTest
 {
     GameStateCache cache;
-    int evaluationDepth = 1;
+    final int evaluationDepth = 1;
 
     @Before
     public void setUp() throws Exception
@@ -19,8 +19,8 @@ public class GameStateCacheTest
     @Test
     public void duplicateKeyIsOverwritten() throws Exception
     {
-        int firstScore = -100;
-        int secondScore = 100;
+        final int firstScore = -100;
+        final int secondScore = 100;
         cache.put(new TTTGameState(3, 3), firstScore, evaluationDepth);
         cache.put(new TTTGameState(3, 3), secondScore, evaluationDepth + 1);
         assertEquals(1, cache.size());
@@ -29,7 +29,7 @@ public class GameStateCacheTest
     @Test
     public void uniqueKeyIsInserted() throws Exception
     {
-        int score = 0;
+        final int score = 0;
 
         GameState gameState = new TTTGameState(3, 3);
         cache.put(gameState, score, evaluationDepth);

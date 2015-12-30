@@ -10,7 +10,7 @@ public class TTTGameState implements GameState
     private Piece[][] board;
     private int ply;
 
-    public TTTGameState(int height, int width)
+    public TTTGameState(final int height, final int width)
     {
         if (height < 0 || width < 0) {
             throw new InvalidParameterException();
@@ -33,10 +33,10 @@ public class TTTGameState implements GameState
     @Override
     public List<Move> getMoves()
     {
-        List<Move> moves = new ArrayList<>();
+        final List<Move> moves = new ArrayList<>();
 
-        Evaluator evaluator = new TTTEvaluator();
-        int score = evaluator.eval(this);
+        final Evaluator evaluator = new TTTEvaluator();
+        final int score = evaluator.eval(this);
         if (score != 0) {
             return moves;
         }
@@ -44,7 +44,7 @@ public class TTTGameState implements GameState
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 if (board[i][j] == null) {
-                    Piece piece = (isFirstPlayerToMove() ? Piece.X : Piece.O);
+                    final Piece piece = (isFirstPlayerToMove() ? Piece.X : Piece.O);
                     moves.add(new TTTMove(i, j, piece));
                 }
             }
@@ -59,22 +59,22 @@ public class TTTGameState implements GameState
     }
 
     @Override
-    public TTTGameState playMove(Move m)
+    public TTTGameState playMove(final Move m)
     {
-        TTTMove move = (TTTMove) m;
+        final TTTMove move = (TTTMove) m;
         validateMove(move);
 
-        TTTGameState newGame = new TTTGameState(getWidth(), getHeight());
+        final TTTGameState newGame = new TTTGameState(getWidth(), getHeight());
         newGame.setPly(ply + 1);
 
-        Piece[][] newBoard = TTTGameState.copyBoard(board);
+        final Piece[][] newBoard = TTTGameState.copyBoard(board);
         newBoard[move.getX()][move.getY()] = move.getPiece();
         newGame.setBoard(newBoard);
 
         return newGame;
     }
 
-    private void validateMove(TTTMove move)
+    private void validateMove(final TTTMove move)
     {
         if (move.getX() > board.length) {
             throw new IllegalMoveException();
@@ -99,23 +99,23 @@ public class TTTGameState implements GameState
         return board[0].length;
     }
 
-    private static Piece[][] copyBoard(Piece[][] board)
+    private static Piece[][] copyBoard(final Piece[][] board)
     {
-        int height = board.length;
-        int width = board[0].length;
-        Piece[][] newBoard = new Piece[height][width];
+        final int height = board.length;
+        final int width = board[0].length;
+        final Piece[][] newBoard = new Piece[height][width];
         for (int i = 0; i < board.length; i++) {
             System.arraycopy(board[i], 0, newBoard[i], 0, newBoard[i].length);
         }
         return newBoard;
     }
 
-    void setPly(int newPly)
+    void setPly(final int newPly)
     {
         ply = newPly;
     }
 
-    void setBoard(Piece[][] board)
+    void setBoard(final Piece[][] board)
     {
         this.board = TTTGameState.copyBoard(board);
     }
@@ -160,7 +160,7 @@ public class TTTGameState implements GameState
             return false;
         }
 
-        TTTGameState gameState = (TTTGameState) o;
+        final TTTGameState gameState = (TTTGameState) o;
 
         return Arrays.deepEquals(board, gameState.getBoard());
     }
@@ -172,10 +172,10 @@ public class TTTGameState implements GameState
             return 0;
         }
 
-        int sizeX = board.length;
-        int sizeY = board[0].length;
+        final int sizeX = board.length;
+        final int sizeY = board[0].length;
 
-        Piece[] flatBoard = new Piece[sizeX * sizeY];
+        final Piece[] flatBoard = new Piece[sizeX * sizeY];
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 flatBoard[(i * sizeY) + j] = board[i][j];

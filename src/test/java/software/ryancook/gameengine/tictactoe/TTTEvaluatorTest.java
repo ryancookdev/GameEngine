@@ -3,7 +3,6 @@ package software.ryancook.gameengine.tictactoe;
 import org.junit.Test;
 import software.ryancook.gameengine.*;
 import software.ryancook.gameengine.tictactoe.TTTGameState.Piece;
-
 import static org.junit.Assert.*;
 
 public class TTTEvaluatorTest
@@ -11,9 +10,9 @@ public class TTTEvaluatorTest
     @Test
     public void startPositionIsEven() throws Exception
     {
-        GameState gameState = new TTTGameState(3, 3);
-        Evaluator evaluator = new TTTEvaluator();
-        int score = evaluator.eval(gameState);
+        final GameState gameState = new TTTGameState(3, 3);
+        final Evaluator evaluator = new TTTEvaluator();
+        final int score = evaluator.eval(gameState);
         assertEquals(0, score);
     }
 
@@ -25,8 +24,8 @@ public class TTTEvaluatorTest
         gameState = gameState.playMove(new TTTMove(1, 0, Piece.X));
         gameState = gameState.playMove(new TTTMove(2, 0, Piece.X));
 
-        Evaluator evaluator = new TTTEvaluator();
-        int score = evaluator.eval(gameState);
+        final Evaluator evaluator = new TTTEvaluator();
+        final int score = evaluator.eval(gameState);
         assertEquals(99999, score);
     }
 
@@ -38,8 +37,8 @@ public class TTTEvaluatorTest
         gameState = gameState.playMove(new TTTMove(1, 1, Piece.O));
         gameState = gameState.playMove(new TTTMove(2, 2, Piece.O));
 
-        Evaluator evaluator = new TTTEvaluator();
-        int score = evaluator.eval(gameState);
+        final Evaluator evaluator = new TTTEvaluator();
+        final int score = evaluator.eval(gameState);
         assertEquals(-99999, score);
     }
 
@@ -55,7 +54,7 @@ public class TTTEvaluatorTest
         gameState = gameState.playMove(new TTTMove(1, 2, Piece.O));
         gameState = gameState.playMove(new TTTMove(2, 2, Piece.O));
 
-        Evaluator evaluator = new TTTEvaluator();
+        final Evaluator evaluator = new TTTEvaluator();
         evaluator.eval(gameState);
     }
 

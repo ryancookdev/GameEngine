@@ -4,16 +4,16 @@ import java.util.*;
 
 public class GameStateCache
 {
-    private Map<Integer, Result> table;
+    private final Map<Integer, Result> table;
 
     public GameStateCache()
     {
         table = new HashMap<>();
     }
 
-    public void put(GameState gameState, int score, int evaluationDepth)
+    public void put(final GameState gameState, final int score, final int evaluationDepth)
     {
-        Result result = new Result(gameState.getPly(), score, evaluationDepth);
+        final Result result = new Result(gameState.getPly(), score, evaluationDepth);
         table.put(gameState.hashCode(), result);
     }
 
@@ -22,28 +22,28 @@ public class GameStateCache
         return table.size();
     }
 
-    public boolean hasPosition(GameState gameState)
+    public boolean hasPosition(final GameState gameState)
     {
         return table.containsKey(gameState.hashCode());
     }
 
-    public int getScore(GameState gameState)
+    public int getScore(final GameState gameState)
     {
         return table.get(gameState.hashCode()).getScore();
     }
 
-    public int getEvaluationDepth(GameState gameState)
+    public int getEvaluationDepth(final GameState gameState)
     {
         return table.get(gameState.hashCode()).getEvaluationDepth();
     }
 
     private class Result
     {
-        int ply;
-        int score;
-        int evaluationDepth;
+        final int ply;
+        final int score;
+        final int evaluationDepth;
 
-        Result(int ply, int score, int evaluationDepth)
+        Result(final int ply, final int score, final int evaluationDepth)
         {
             this.ply = ply;
             this.score = score;

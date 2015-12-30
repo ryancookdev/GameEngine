@@ -2,19 +2,18 @@ package software.ryancook.gameengine.tictactoe;
 
 import software.ryancook.gameengine.*;
 import software.ryancook.gameengine.tictactoe.TTTGameState.Piece;
-
 import java.util.List;
 
 public class TTTEvaluator implements Evaluator
 {
     @Override
-    public int eval(GameState g)
+    public int eval(final GameState g)
     {
         boolean winX = false;
         boolean winO = false;
 
-        TTTGameState gameState = (TTTGameState) g;
-        Piece[][] board = gameState.getBoard();
+        final TTTGameState gameState = (TTTGameState) g;
+        final Piece[][] board = gameState.getBoard();
 
         Piece piece1;
         Piece piece2;
@@ -84,11 +83,10 @@ public class TTTEvaluator implements Evaluator
     }
 
     @Override
-    public List<Move> sortMoves(GameState gameState, List<Move> moves)
+    public List<Move> sortMoves(final GameState gameState, final List<Move> moves)
     {
         return moves;
     }
 
     class IllegalPositionException extends RuntimeException {}
 }
-

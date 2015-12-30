@@ -6,8 +6,8 @@ import software.ryancook.gameengine.tictactoe.TTTGameState.Piece;
 final public class TTTMove implements Move
 {
     private final Piece piece;
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
 
     public TTTMove()
     {
@@ -16,7 +16,7 @@ final public class TTTMove implements Move
         piece = null;
     }
 
-    public TTTMove(int x, int y, Piece piece)
+    public TTTMove(final int x, final int y, final Piece piece)
     {
         this.x = x;
         this.y = y;
@@ -47,7 +47,7 @@ final public class TTTMove implements Move
     @Override
     public String toString()
     {
-        String pieceString = (piece == Piece.X ? "X" : "O");
+        final String pieceString = (piece == Piece.X ? "X" : "O");
         return "{" + x + ", " + y + "} = " + piece;
     }
 }

@@ -12,17 +12,17 @@ public class Negamax
     private int maxDepth;
     private int actualIterationDepth;
     private int startDepth;
-    private Evaluator evaluator;
+    private final Evaluator evaluator;
     private GameStateCache cache;
 
-    public Negamax(Evaluator evaluator)
+    public Negamax(final Evaluator evaluator)
     {
         this.maxTime = DEFAULT_MAX_TIME;
         this.evaluator = evaluator;
         this.cache = new GameStateCache();
     }
 
-    public void setMaxTime(int maxTime)
+    public void setMaxTime(final int maxTime)
     {
         this.maxTime = maxTime;
     }
@@ -32,10 +32,10 @@ public class Negamax
         return maxDepth;
     }
 
-    public Move findBestMove(GameState gameState)
+    public Move findBestMove(final GameState gameState)
     {
         startTime();
-        cache = new GameStateCache();
+        resetCache();
         Move bestMove = null;
         startDepth = gameState.getPly();
         for (maxDepth = 0; maxDepth >= 0; maxDepth++) {
@@ -44,9 +44,9 @@ public class Negamax
             int alpha = WORST_SCORE;
             List<Move> moves = getSortedMoves(gameState);
             Move bestMoveThisIteration = null;
-            for (Move move : moves) {
+            for (final Move move : moves) {
                 GameState newGameState = gameState.playMove(move);
-                int score = (-1 * negamax(newGameState, WORST_SCORE, -1 * alpha));
+                int score = (-negamax(newGameState, WORST_SCORE, -alpha));
                 if (score == BEST_SCORE) {
                     return move;
                 }
@@ -74,9 +74,15 @@ public class Negamax
         return bestMove;
     }
 
-    private int negamax(GameState gameState, int alpha, int beta)
+    private void resetCache()
     {
-        List<Move> moves = getMoves(gameState);
+        cache = new GameStateCache();
+        assert cache.size() == 0;
+    }
+
+    private int negamax(final GameState gameState, int alpha, final int beta)
+    {
+        final List<Move> moves = getMoves(gameState);
 
         if (reachedMaximumDepth(gameState) && moves.size() == 0) { // Quiescent
             return getSubjectiveScore(gameState);
@@ -86,15 +92,14 @@ public class Negamax
         }
 
         if (reachedMaximumDepth(gameState)) {
-            // This is never reached for TTT
             moves.add(gameState.getNullMove());
         }
 
-        for (Move move : moves) {
+        for (final Move move : moves) {
             if (outOfTime()) {
                 return beta;
             }
-            int score = getScore(gameState, move, alpha, beta);
+            final int score = getScore(gameState, move, alpha, beta);
             if (score >= beta) {
                 return score; // fail hard beta-cutoff
             }
@@ -106,57 +111,57 @@ public class Negamax
         return alpha;
     }
 
-    private int getSubjectiveScore(GameState gameState)
+    private int getSubjectiveScore(final GameState gameState)
     {
         updateActualIterationDepth(gameState);
 
         int score = evaluator.eval(gameState);
         if (!gameState.isFirstPlayerToMove()) {
-            score *= -1;
+            score = -score;
         }
         return score;
     }
 
-    private void updateActualIterationDepth(GameState gameState)
+    private void updateActualIterationDepth(final GameState gameState)
     {
-        int depthForBranch = gameState.getPly() - startDepth;
+        final int depthForBranch = gameState.getPly() - startDepth;
         if (actualIterationDepth < depthForBranch) {
             actualIterationDepth = depthForBranch;
         }
     }
 
-    private List<Move> getMoves(GameState gameState)
+    private List<Move> getMoves(final GameState gameState)
     {
         return (reachedMaximumDepth(gameState) ? getCriticalMoves(gameState) : getSortedMoves(gameState));
     }
 
-    private int getScore(GameState gameState, Move move, int alpha, int beta)
+    private int getScore(final GameState gameState, final Move move, final int alpha, final int beta)
     {
         if (move.isNull()) {
             return getSubjectiveScore(gameState);
         }
 
-        GameState newGameState = gameState.playMove(move);
+        final GameState newGameState = gameState.playMove(move);
 
         if (hasPositionAtMaximumDepth(newGameState)) {
             return cache.getScore(newGameState);
         }
 
         if (reachedMaximumDepth(newGameState)) {
-            int score = -getSubjectiveScore(newGameState);
+            final int score = -getSubjectiveScore(newGameState);
             if (score < alpha) { // Delta pruning
                 cache.put(newGameState, score, maxDepth);
                 return score;
             }
         }
 
-        int score = -negamax(newGameState, -beta, -alpha);
+        final int score = -negamax(newGameState, -beta, -alpha);
         cache.put(newGameState, score, maxDepth);
 
         return score;
     }
 
-    private boolean hasPositionAtMaximumDepth(GameState gameState)
+    private boolean hasPositionAtMaximumDepth(final GameState gameState)
     {
         if (cache.hasPosition(gameState)) {
             if (cache.getEvaluationDepth(gameState) >= maxDepth) {
@@ -176,20 +181,20 @@ public class Negamax
         return System.currentTimeMillis() - startTime > maxTime;
     }
 
-    private boolean reachedMaximumDepth(GameState gameState)
+    private boolean reachedMaximumDepth(final GameState gameState)
     {
         return (gameState.getPly() > startDepth + maxDepth);
     }
 
-    private List<Move> getSortedMoves(GameState gameState)
+    private List<Move> getSortedMoves(final GameState gameState)
     {
-        List<Move> moves = gameState.getMoves();
+        final List<Move> moves = gameState.getMoves();
         return evaluator.sortMoves(gameState, moves);
     }
 
-    private List<Move> getCriticalMoves(GameState gameState)
+    private List<Move> getCriticalMoves(final GameState gameState)
     {
-        List<Move> moves = gameState.getCriticalMoves();
+        final List<Move> moves = gameState.getCriticalMoves();
         return evaluator.sortMoves(gameState, moves);
     }
 }

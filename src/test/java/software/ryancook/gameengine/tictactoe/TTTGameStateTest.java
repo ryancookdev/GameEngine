@@ -4,8 +4,7 @@ import org.junit.Test;
 import software.ryancook.gameengine.*;
 import software.ryancook.gameengine.tictactoe.TTTGameState.Piece;
 import java.security.InvalidParameterException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import static org.junit.Assert.*;
 
 public class TTTGameStateTest
@@ -43,15 +42,15 @@ public class TTTGameStateTest
     public void movesMustNotBeNull() throws Exception
     {
         gameState = new TTTGameState(3, 3);
-        List<Move> moves = gameState.getMoves();
-        TTTMove move = (TTTMove) moves.get(0);
+        final List<Move> moves = gameState.getMoves();
+        final TTTMove move = (TTTMove) moves.get(0);
         assertFalse(move.isNull());
     }
 
     @Test
     public void nullMoveChangesPly() throws Exception
     {
-        Move nullMove = new TTTMove();
+        final Move nullMove = new TTTMove();
         gameState = new TTTGameState(3, 3);
         gameState = gameState.playMove(nullMove);
         assertEquals(1, gameState.getPly());
@@ -60,7 +59,7 @@ public class TTTGameStateTest
     @Test(expected=TTTGameState.IllegalMoveException.class)
     public void moveMustBeInBounds() throws Exception
     {
-        Move outOfBoundsMove = new TTTMove(5, 5, TTTGameState.Piece.X);
+        final Move outOfBoundsMove = new TTTMove(5, 5, TTTGameState.Piece.X);
         gameState = new TTTGameState(3, 3);
         gameState = gameState.playMove(outOfBoundsMove);
     }
@@ -68,7 +67,7 @@ public class TTTGameStateTest
     @Test
     public void nullMoveDoesNotDecreaseMoveCount() throws Exception
     {
-        Move nullMove = new TTTMove();
+        final Move nullMove = new TTTMove();
         gameState = new TTTGameState(3, 3);
         gameState = gameState.playMove(nullMove);
         assertEquals(9, gameState.getMoves().size());
@@ -77,7 +76,7 @@ public class TTTGameStateTest
     @Test
     public void validMoveDecreasesMoveCount() throws Exception
     {
-        Move move = new TTTMove(0, 0, TTTGameState.Piece.X);
+        final Move move = new TTTMove(0, 0, TTTGameState.Piece.X);
         gameState = new TTTGameState(3, 3);
         gameState = gameState.playMove(move);
         assertEquals(8, gameState.getMoves().size());
@@ -86,7 +85,7 @@ public class TTTGameStateTest
     @Test(expected=TTTGameState.IllegalMoveException.class)
     public void moveMustBeOnEmptySquare() throws Exception
     {
-        Move move = new TTTMove(0, 0, TTTGameState.Piece.X);
+        final Move move = new TTTMove(0, 0, TTTGameState.Piece.X);
         gameState = new TTTGameState(3, 3);
         gameState = gameState.playMove(move);
         gameState = gameState.playMove(move);
@@ -136,16 +135,4 @@ public class TTTGameStateTest
         assertNotEquals(gameState1, gameState2);
         assertNotEquals(gameState1.hashCode(), gameState2.hashCode());
     }
-
-    @Test
-    public void compareDifferentPlayerToMove() throws Exception
-    {
-        /*GameState gameState1 = new TTTGameState(3, 3);
-        GameState gameState2 = new TTTGameState(3, 3);
-        gameState2 = gameState2.playMove(new TTTMove());
-
-        assertNotEquals(gameState1, gameState2);
-        assertNotEquals(gameState1.hashCode(), gameState2.hashCode());*/
-    }
-
 }
